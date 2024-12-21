@@ -62,6 +62,7 @@ func checkLevel(level []int) bool {
 func silver() {
 	file, err := os.Open("day2/day2.txt")
 	if err != nil {
+		//log err
 		return
 	}
 	defer file.Close()
@@ -89,7 +90,6 @@ func silver() {
 			count++
 		}
 	}
-
 	fmt.Println(count)
 }
 
