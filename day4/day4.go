@@ -25,7 +25,10 @@ func main() {
 	}
 
 	count := countXMAS(grid)
-	fmt.Println("count is", count)
+	fmt.Println("Part One: XMAS count is", count)
+
+	xMasCount := countXMASPattern(grid)
+	fmt.Println("Part Two: X-MAS count is", xMasCount)
 }
 
 func readInputFile(filename string) ([]string, error) {
@@ -109,4 +112,41 @@ func countXMAS(grid []string) int {
 	}
 
 	return count
+}
+
+// Part Two: X-MAS Pattern Search
+func countXMASPattern(grid []string) int {
+	count := 0
+	rows := len(grid)
+	cols := len(grid[0])
+
+	for row := 1; row < rows-1; row++ {
+		for col := 1; col < cols-1; col++ {
+			if isXMASPattern(grid, row, col) {
+				count++
+			}
+		}
+	}
+
+	return count
+}
+
+func isXMASPattern(grid []string, row, col int) bool {
+	// check for X pattern
+	center := grid[row][col]
+	if center != 'A' {
+		return false
+	}
+
+	topLeft := grid[row-1][col-1]
+	topRight := grid[row-1][col+1]
+	bottomLeft := grid[row+1][col-1]
+	bottomRight := grid[row+1][col+1]
+
+	return (isMAS(topLeft, center, bottomRight) && isMAS(topRight, center, bottomLeft)) ||
+		(isMAS(bottomRight, center, topLeft) && isMAS(bottomLeft, center, topRight))
+}
+
+func isMAS(a, b, c byte) bool {
+	return (a == 'M' && c == 'S') || (a == 'S' && c == 'M')
 }
